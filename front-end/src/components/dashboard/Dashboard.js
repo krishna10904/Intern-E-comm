@@ -1,43 +1,60 @@
 import React from "react";
-import StatsCard from "./StatsCard";
-import RecentActivity from "./RecentActivity";
-import AttendanceCard from "./AttendanceCard";
-import LeaveSummary from "./LeaveSummary";
 import "./Dashboard.css";
 
 function Dashboard() {
 
   const stats = [
-    { title: "Total Products", value: 25 },
-    { title: "Total Orders", value: 12 },
-    { title: "Total Users", value: 5 },
-    { title: "Pending Deliveries", value: 3 },
-    { title: "Today Orders", value: 5 },
+    { title: "Total Products", value: 25, icon: "📦", color: "#9fb7d9" },
+    { title: "Total Orders", value: 12, icon: "🛒", color: "#a9cbb7" },
+    { title: "Total Users", value: 5, icon: "👤", color: "#e9d39c" },
+    { title: "Pending Deliveries", value: 3, icon: "🔔", color: "#e79a8d" },
+  ];
+
+  const activities = [
+    { text: 'User "JohnDoe" registered', time: "10 mins ago" },
+    { text: 'Order #123 placed by User "subh"', time: "20 mins ago" },
+    { text: 'Product "iPhone 13" added', time: "1 hour ago" },
+    { text: 'Order #122 marked as delivered to "alice"', time: "3 hours ago" },
   ];
 
   return (
     <div className="dashboard-container">
-      <h2 className="dashboard-title">Dashboard</h2>
+      <h1 className="dashboard-title">Dashboard</h1>
 
-      {/* Main Stats */}
-      <div className="main-stats">
+      {/* Stats Cards */}
+      <div className="stats-wrapper">
         {stats.map((item, index) => (
-          <StatsCard
+          <div
             key={index}
-            title={item.title}
-            value={item.value}
-          />
+            className="stats-card"
+            style={{ backgroundColor: item.color }}
+          >
+            <div className="icon-box">{item.icon}</div>
+
+            <div>
+              <p className="card-title">{item.title}</p>
+              <h2 className="card-value">{item.value}</h2>
+            </div>
+          </div>
         ))}
       </div>
 
-      {/* Extra Cards */}
-      <div className="extra-stats">
-        <AttendanceCard />
-        <LeaveSummary />
-      </div>
+      {/* Recent Activities */}
+      <div className="recent-container">
+        <h2 className="recent-title">Recent Activities</h2>
 
-      {/* Recent Activity */}
-      <RecentActivity />
+        <div className="activity-header">
+          <span>Activity</span>
+          <span>Time</span>
+        </div>
+
+        {activities.map((item, index) => (
+          <div key={index} className="activity-row">
+            <span>{item.text}</span>
+            <span>{item.time}</span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

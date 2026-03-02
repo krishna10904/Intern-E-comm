@@ -15,24 +15,24 @@ const Nav = () => {
       {auth ? (
         <ul className="nav-ul">
 
-          {/* Dashboard */}
           <li><Link to="/">Dashboard</Link></li>
 
-          {/* Products */}
           <li><Link to="/products">Products</Link></li>
           <li><Link to="/add">Add Product</Link></li>
 
-          {/* Profile */}
           <li><Link to="/profile">Profile</Link></li>
 
-          <Link to="/attendance">Attendance</Link>
-          
-          <Link to="/leave">Leave Requests</Link>
-          {/* Logout */}
+          <li><Link to="/attendance">Attendance</Link></li>
+          <li><Link to="/leave">Leave Requests</Link></li>
+
           <li>
             <Link onClick={logout} to="/login">
               Logout ({JSON.parse(auth).name})
             </Link>
+          </li>
+
+          <li>
+            <Link to="/cart">Cart</Link>
           </li>
 
         </ul>

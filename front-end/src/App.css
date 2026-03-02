@@ -134,13 +134,3 @@ body {
   background: #f9fffd;
 }
 
-/* ===== FOOTER ===== */
-.footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  padding: 10px;
-  background: rgba(209, 241, 231, 0.9);
-  text-align: center;
-  color: #1f4037;
-}

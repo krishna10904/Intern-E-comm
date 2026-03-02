@@ -1,0 +1,55 @@
+.attendance-container {
+  padding: 40px;
+  background: #eef3f1;
+  min-height: 100vh;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.attendance-title {
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #1e2a3a;
+}
+
+/* Calendar Card */
+.calendar-card {
+  background: #f5f7f9;
+  padding: 25px;
+  border-radius: 20px;
+  margin-bottom: 30px;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.calendar-card input {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #cbd5d1;
+  outline: none;
+}
+
+/* Records */
+.records-card {
+  background: #f5f7f9;
+  padding: 30px;
+  border-radius: 20px;
+}
+
+.record-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.record-row:last-child {
+  border-bottom: none;
+}
+
+.no-record {
+  margin-top: 20px;
+  text-align: center;
+}
