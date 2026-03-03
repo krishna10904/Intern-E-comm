@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 require("./db/config");
 const User = require("./db/User");
 const Product = require("./db/Product");
+const Cart = require("./db/Cart");
 
 const app = express();
 const jwtKey = "e-com";
@@ -26,17 +27,10 @@ app.post("/register", async (req, res) => {
     result = result.toObject();
     delete result.password;
 
-    jwt.sign(
-      { result },
-      jwtKey,
-      { expiresIn: "2h" },
-      (err, token) => {
-        if (err) {
-          return res.status(500).json({ message: "JWT error" });
-        }
-        res.json({ result, auth: token });
-      }
-    );
+    jwt.sign({ result }, jwtKey, { expiresIn: "2h" }, (err, token) => {
+      if (err) return res.status(500).json({ message: "JWT error" });
+      res.json({ result, auth: token });
+    });
   } catch (err) {
     res.status(500).json({ message: "Register failed" });
   }
@@ -49,22 +43,12 @@ app.post("/login", async (req, res) => {
   }
 
   const user = await User.findOne(req.body).select("-password");
+  if (!user) return res.json({ result: "No User found" });
 
-  if (!user) {
-    return res.json({ result: "No User found" });
-  }
-
-  jwt.sign(
-    { user },
-    jwtKey,
-    { expiresIn: "2h" },
-    (err, token) => {
-      if (err) {
-        return res.status(500).json({ message: "JWT error" });
-      }
-      res.json({ user, auth: token });
-    }
-  );
+  jwt.sign({ user }, jwtKey, { expiresIn: "2h" }, (err, token) => {
+    if (err) return res.status(500).json({ message: "JWT error" });
+    res.json({ user, auth: token });
+  });
 });
 
 /* ================= ADD PRODUCT ================= */
@@ -115,6 +99,76 @@ app.get("/search/:key", async (req, res) => {
     ]
   });
   res.json(result);
+});
+
+/* ================= ADD TO CART ================= */
+app.post("/cart", async (req, res) => {
+  try {
+    const { userId, productId } = req.body;
+
+    const existingItem = await Cart.findOne({ userId, productId });
+
+    if (existingItem) {
+      existingItem.quantity += 1;
+      await existingItem.save();
+      return res.json(existingItem);
+    }
+
+    const cartItem = new Cart(req.body);
+    const result = await cartItem.save();
+    res.json(result);
+
+  } catch (err) {
+    res.status(500).json({ message: "Add to cart failed" });
+  }
+});
+
+/* ================= GET CART ================= */
+app.get("/cart/:userId", async (req, res) => {
+  try {
+    const cartItems = await Cart.find({ userId: req.params.userId });
+
+    const detailedCart = await Promise.all(
+      cartItems.map(async (item) => {
+        const product = await Product.findById(item.productId);
+        return {
+          _id: item._id,
+          quantity: item.quantity,
+          product
+        };
+      })
+    );
+
+    res.json(detailedCart);
+
+  } catch (err) {
+    res.status(500).json({ message: "Fetch cart failed" });
+  }
+});
+
+/* ================= REMOVE FROM CART ================= */
+app.delete("/cart/:id", async (req, res) => {
+  const result = await Cart.deleteOne({ _id: req.params.id });
+  res.json(result);
+});
+
+/* ================= DASHBOARD STATS ================= */
+app.get("/dashboard-stats", async (req, res) => {
+  try {
+    const totalProducts = await Product.countDocuments();
+    const totalUsers = await User.countDocuments();
+    const totalOrders = await Cart.countDocuments();
+
+    res.json({
+      totalProducts,
+      totalUsers,
+      totalOrders,
+      pendingDeliveries: 0
+    });
+
+  } catch (err) {
+    res.status(500).json({ message: "Dashboard fetch failed" });
+  }
 });
 
 /* ================= START SERVER ================= */

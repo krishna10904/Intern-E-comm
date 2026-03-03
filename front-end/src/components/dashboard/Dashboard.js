@@ -1,20 +1,45 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Dashboard.css";
 
 function Dashboard() {
 
-  const stats = [
-    { title: "Total Products", value: 25, icon: "📦", color: "#9fb7d9" },
-    { title: "Total Orders", value: 12, icon: "🛒", color: "#a9cbb7" },
-    { title: "Total Users", value: 5, icon: "👤", color: "#e9d39c" },
-    { title: "Pending Deliveries", value: 3, icon: "🔔", color: "#e79a8d" },
-  ];
+  const [stats, setStats] = useState({
+    totalProducts: 0,
+    totalOrders: 0,
+    totalUsers: 0,
+    pendingDeliveries: 0
+  });
 
-  const activities = [
-    { text: 'User "JohnDoe" registered', time: "10 mins ago" },
-    { text: 'Order #123 placed by User "subh"', time: "20 mins ago" },
-    { text: 'Product "iPhone 13" added', time: "1 hour ago" },
-    { text: 'Order #122 marked as delivered to "alice"', time: "3 hours ago" },
+  const [activities, setActivities] = useState([]);
+
+  useEffect(() => {
+    fetchStats();
+  }, []);
+
+  const fetchStats = async () => {
+    try {
+      let result = await fetch("http://localhost:5000/dashboard-stats");
+      result = await result.json();
+
+      setStats(result);
+
+      // Generate simple real activity logs
+      setActivities([
+        { text: `Total ${result.totalUsers} users registered`, time: "Just now" },
+        { text: `${result.totalProducts} products available`, time: "Updated" },
+        { text: `${result.totalOrders} cart items created`, time: "Live Data" }
+      ]);
+
+    } catch (err) {
+      console.log("Dashboard fetch error:", err);
+    }
+  };
+
+  const statsData = [
+    { title: "Total Products", value: stats.totalProducts, icon: "📦", color: "#9fb7d9" },
+    { title: "Total Orders", value: stats.totalOrders, icon: "🛒", color: "#a9cbb7" },
+    { title: "Total Users", value: stats.totalUsers, icon: "👤", color: "#e9d39c" },
+    { title: "Pending Deliveries", value: stats.pendingDeliveries, icon: "🔔", color: "#e79a8d" },
   ];
 
   return (
@@ -23,7 +48,7 @@ function Dashboard() {
 
       {/* Stats Cards */}
       <div className="stats-wrapper">
-        {stats.map((item, index) => (
+        {statsData.map((item, index) => (
           <div
             key={index}
             className="stats-card"

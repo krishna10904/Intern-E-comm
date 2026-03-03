@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Cart.css";
 
 const Cart = () => {
-
   const [cartItems, setCartItems] = useState([]);
+  const navigate = useNavigate();
+
+  const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     fetchCart();
@@ -11,15 +14,12 @@ const Cart = () => {
 
   const fetchCart = async () => {
     try {
-      const result = await fetch("http://localhost:5000/cart", {
-        headers: {
-          authorization: JSON.parse(localStorage.getItem("token"))
-        }
-      });
+      const result = await fetch(
+        `http://localhost:5000/cart/${user._id}`
+      );
 
       const data = await result.json();
       setCartItems(data);
-
     } catch (err) {
       console.log(err);
     }
@@ -27,36 +27,33 @@ const Cart = () => {
 
   const removeItem = async (id) => {
     await fetch(`http://localhost:5000/cart/${id}`, {
-      method: "DELETE"
+      method: "DELETE",
     });
 
     fetchCart();
   };
 
   const totalPrice = cartItems.reduce(
-    (acc, item) => acc + item.price * (item.quantity || 1),
+    (acc, item) =>
+      acc + (item.product?.price || 0) * item.quantity,
     0
   );
 
   return (
     <div className="cart-page">
-
       <div className="cart-container">
-
         <h2>Your Cart</h2>
 
         {cartItems.length > 0 ? (
           <div className="cart-content">
-
-            {/* Left Side - Items */}
+            {/* LEFT SIDE - ITEMS */}
             <div className="cart-items">
-
               {cartItems.map((item) => (
                 <div key={item._id} className="cart-item">
                   <div>
-                    <h4>{item.name}</h4>
-                    <p>Price: ₹ {item.price}</p>
-                    <p>Quantity: {item.quantity || 1}</p>
+                    <h4>{item.product?.name}</h4>
+                    <p>Price: ₹ {item.product?.price}</p>
+                    <p>Quantity: {item.quantity}</p>
                   </div>
 
                   <button
@@ -67,10 +64,9 @@ const Cart = () => {
                   </button>
                 </div>
               ))}
-
             </div>
 
-            {/* Right Side - Summary */}
+            {/* RIGHT SIDE - SUMMARY */}
             <div className="cart-summary">
               <h3>Summary</h3>
               <p>Total Items: {cartItems.length}</p>
@@ -80,25 +76,22 @@ const Cart = () => {
                 Proceed to Checkout
               </button>
             </div>
-
           </div>
         ) : (
           <div className="empty-cart-container">
-  <div className="empty-icon">🛒</div>
-  <h3>Your Cart is Empty</h3>
-  <p>Add some products to see them here.</p>
+            <div className="empty-icon">🛒</div>
+            <h3>Your Cart is Empty</h3>
+            <p>Add some products to see them here.</p>
 
-  <button
-    className="shop-btn"
-    onClick={() => window.location.href = "/products"}
-  >
-    Browse Products
-  </button>
-</div>
+            <button
+              className="shop-btn"
+              onClick={() => navigate("/products")}
+            >
+              Browse Products
+            </button>
+          </div>
         )}
-
       </div>
-
     </div>
   );
 };

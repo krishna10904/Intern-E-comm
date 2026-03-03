@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import "./ProductList.css";
 
 const ProductList = () => {
+
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
@@ -10,18 +11,14 @@ const ProductList = () => {
     }, []);
 
     const getProducts = async () => {
-        let result = await fetch('http://localhost:5000/products', {
-            headers: {
-                authorization: JSON.parse(localStorage.getItem('token'))
-            }
-        });
+        let result = await fetch('http://localhost:5000/products');
         result = await result.json();
         setProducts(result);
     }
 
     const deleteProduct = async (id) => {
         let result = await fetch(`http://localhost:5000/product/${id}`, {
-            method: "Delete"
+            method: "DELETE"
         });
         result = await result.json();
         if (result) {
@@ -29,13 +26,37 @@ const ProductList = () => {
         }
     }
 
+    const addToCart = async (productId) => {
+        const user = JSON.parse(localStorage.getItem("user"));
+        const userId = user?._id;
+
+        if (!userId) {
+            alert("Please login first");
+            return;
+        }
+
+        let result = await fetch("http://localhost:5000/cart", {
+            method: "POST",
+            body: JSON.stringify({ userId, productId }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+
+        result = await result.json();
+
+        if (result) {
+            alert("🛒 Product added to cart!");
+        }
+    }
+
     const searchHandle = async (event) => {
         let key = event.target.value;
         if (key) {
             let result = await fetch(`http://localhost:5000/search/${key}`);
-            result = await result.json()
+            result = await result.json();
             if (result) {
-                setProducts(result)
+                setProducts(result);
             }
         } else {
             getProducts();
@@ -47,7 +68,6 @@ const ProductList = () => {
 
             <h1 className="product-title">Product List</h1>
 
-            {/* Search Box */}
             <div className="search-box">
                 <input
                     type="text"
@@ -56,7 +76,6 @@ const ProductList = () => {
                 />
             </div>
 
-            {/* Table Header */}
             <div className="table-header">
                 <div>S. No.</div>
                 <div>Name</div>
@@ -65,7 +84,6 @@ const ProductList = () => {
                 <div>Operation</div>
             </div>
 
-            {/* Table Rows */}
             {
                 products.length > 0 ?
                     products.map((item, index) => (
@@ -75,6 +93,15 @@ const ProductList = () => {
                             <div>₹ {item.price}</div>
                             <div>{item.category}</div>
                             <div className="action-buttons">
+
+                                {/* ADD TO CART BUTTON */}
+                                <button
+                                    className="cart-btn"
+                                    onClick={() => addToCart(item._id)}
+                                >
+                                    Add To Cart
+                                </button>
+
                                 <button
                                     className="delete-btn"
                                     onClick={() => deleteProduct(item._id)}
@@ -88,6 +115,7 @@ const ProductList = () => {
                                 >
                                     Update
                                 </Link>
+
                             </div>
                         </div>
                     ))
