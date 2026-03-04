@@ -12,6 +12,8 @@ import AttendancePage from './components/dashboard/AttendancePage';
 import LeavePage from './components/dashboard/LeavePage';
 import Cart from './components/Cart';
 import Profile from './components/Profile';
+import Payment from "./components/Payment";
+
 function App() {
   return (
     <div className="App">
@@ -37,6 +39,7 @@ function App() {
 
           </Route>
 
+            <Route path="/payment" element={<Payment />} />
           {/* 🔓 Public Routes */}
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />

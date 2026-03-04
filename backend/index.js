@@ -6,6 +6,7 @@ require("./db/config");
 const User = require("./db/User");
 const Product = require("./db/Product");
 const Cart = require("./db/Cart");
+const Payment = require("./db/Payment");
 
 const app = express();
 const jwtKey = "e-com";
@@ -168,6 +169,32 @@ app.get("/dashboard-stats", async (req, res) => {
 
   } catch (err) {
     res.status(500).json({ message: "Dashboard fetch failed" });
+  }
+});
+
+/* ================= MAKE PAYMENT ================= */
+app.post("/payment", async (req, res) => {
+  try {
+    const payment = new Payment(req.body);
+    const result = await payment.save();
+
+    res.json({
+      message: "Payment successful",
+      result
+    });
+
+  } catch (err) {
+    res.status(500).json({ message: "Payment failed" });
+  }
+});
+
+/* ================= GET PAYMENTS ================= */
+app.get("/payments/:userId", async (req, res) => {
+  try {
+    const payments = await Payment.find({ userId: req.params.userId });
+    res.json(payments);
+  } catch (err) {
+    res.status(500).json({ message: "Fetch payment failed" });
   }
 });
 

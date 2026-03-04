@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./Cart.css";
 
 const Cart = () => {
+
   const [cartItems, setCartItems] = useState([]);
   const navigate = useNavigate();
 
@@ -20,6 +21,7 @@ const Cart = () => {
 
       const data = await result.json();
       setCartItems(data);
+
     } catch (err) {
       console.log(err);
     }
@@ -33,11 +35,19 @@ const Cart = () => {
     fetchCart();
   };
 
+  // TOTAL PRICE CALCULATION
   const totalPrice = cartItems.reduce(
     (acc, item) =>
       acc + (item.product?.price || 0) * item.quantity,
     0
   );
+
+  // NAVIGATE TO PAYMENT PAGE
+  const goToPayment = () => {
+    navigate("/payment", {
+      state: { amount: totalPrice }
+    });
+  };
 
   return (
     <div className="cart-page">
@@ -46,10 +56,12 @@ const Cart = () => {
 
         {cartItems.length > 0 ? (
           <div className="cart-content">
+
             {/* LEFT SIDE - ITEMS */}
             <div className="cart-items">
               {cartItems.map((item) => (
                 <div key={item._id} className="cart-item">
+
                   <div>
                     <h4>{item.product?.name}</h4>
                     <p>Price: ₹ {item.product?.price}</p>
@@ -62,25 +74,37 @@ const Cart = () => {
                   >
                     Remove
                   </button>
+
                 </div>
               ))}
             </div>
 
             {/* RIGHT SIDE - SUMMARY */}
             <div className="cart-summary">
+
               <h3>Summary</h3>
+
               <p>Total Items: {cartItems.length}</p>
+
               <h2>Total: ₹ {totalPrice}</h2>
 
-              <button className="checkout-btn">
+              <button
+                className="checkout-btn"
+                onClick={goToPayment}
+              >
                 Proceed to Checkout
               </button>
+
             </div>
+
           </div>
         ) : (
           <div className="empty-cart-container">
+
             <div className="empty-icon">🛒</div>
+
             <h3>Your Cart is Empty</h3>
+
             <p>Add some products to see them here.</p>
 
             <button
@@ -89,6 +113,7 @@ const Cart = () => {
             >
               Browse Products
             </button>
+
           </div>
         )}
       </div>
