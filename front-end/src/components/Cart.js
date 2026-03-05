@@ -16,7 +16,7 @@ const Cart = () => {
   const fetchCart = async () => {
     try {
       const result = await fetch(
-        `http://localhost:5000/cart/${user._id}`
+        `https://intern-e-comm-1.onrender.com/cart/${user._id}`
       );
 
       const data = await result.json();
@@ -28,7 +28,7 @@ const Cart = () => {
   };
 
   const removeItem = async (id) => {
-    await fetch(`http://localhost:5000/cart/${id}`, {
+    await fetch(`https://intern-e-comm-1.onrender.com/cart/${id}`, {
       method: "DELETE",
     });
 

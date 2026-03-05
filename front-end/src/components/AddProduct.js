@@ -21,7 +21,7 @@ const AddProduct = () => {
         const userId = user?._id;
 
         try {
-            let result = await fetch("http://localhost:5000/add-product", {
+            let result = await fetch("https://intern-e-comm-1.onrender.com/add-product", {
                 method: "POST",
                 body: JSON.stringify({ name, price, category, company, userId }),
                 headers: {

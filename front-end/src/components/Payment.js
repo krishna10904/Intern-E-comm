@@ -24,7 +24,7 @@ function Payment() {
     const orderId = "ORDER_" + Date.now();
 
     // 1️⃣ SAVE PAYMENT
-    let paymentResult = await fetch("http://localhost:5000/payment", {
+    let paymentResult = await fetch("https://intern-e-comm-1.onrender.com/payment", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -42,7 +42,7 @@ function Payment() {
     if (paymentResult) {
 
       // 2️⃣ CREATE ORDER AFTER PAYMENT
-      await fetch("http://localhost:5000/create-order", {
+      await fetch("https://intern-e-comm-1.onrender.com/create-order", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

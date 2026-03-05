@@ -13,7 +13,7 @@ function Orders() {
   const fetchOrders = async () => {
 
     let result = await fetch(
-      `http://localhost:5000/orders/${user._id}`
+      `https://intern-e-comm-1.onrender.com/orders/${user._id}`
     );
 
     result = await result.json();

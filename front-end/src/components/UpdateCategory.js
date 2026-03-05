@@ -16,7 +16,7 @@ const UpdateCategory = () => {
   const getCategoryDetails = async ()=>{
 
     let result = await fetch(
-      `http://localhost:5000/category/${params.id}`
+      `https://intern-e-comm-1.onrender.com/category/${params.id}`
     );
 
     result = await result.json();
