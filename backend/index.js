@@ -1,6 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
+const Order = require("./db/Order");
+const Category = require("./db/Category");
 
 require("./db/config");
 const User = require("./db/User");
@@ -195,6 +197,109 @@ app.get("/payments/:userId", async (req, res) => {
     res.json(payments);
   } catch (err) {
     res.status(500).json({ message: "Fetch payment failed" });
+  }
+});
+/* ================= CREATE ORDER ================= */
+app.post("/create-order", async (req, res) => {
+  try {
+
+    const { userId, paymentId, totalAmount } = req.body;
+
+    const cartItems = await Cart.find({ userId });
+
+    const orderItems = cartItems.map(item => ({
+      productId: item.productId,
+      quantity: item.quantity
+    }));
+
+    const order = new Order({
+      userId,
+      items: orderItems,
+      totalAmount,
+      paymentId
+    });
+
+    const result = await order.save();
+
+    // clear cart after order
+    await Cart.deleteMany({ userId });
+
+    res.json(result);
+
+  } catch (err) {
+    res.status(500).json({ message: "Order creation failed" });
+  }
+});
+/* ================= GET USER ORDERS ================= */
+app.get("/orders/:userId", async (req, res) => {
+
+  const orders = await Order.find({ userId: req.params.userId });
+
+  res.json(orders);
+
+});
+/* ================= ADD CATEGORY ================= */
+app.post("/add-category", async (req, res) => {
+  try {
+    const category = new Category(req.body);
+    const result = await category.save();
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ message: "Category creation failed" });
+  }
+});
+
+/* ================= GET ALL CATEGORIES ================= */
+app.get("/categories", async (req, res) => {
+  try {
+    const categories = await Category.find({ status: true });
+    res.json(categories);
+  } catch (err) {
+    res.status(500).json({ message: "Fetch categories failed" });
+  }
+});
+
+/* ================= GET CATEGORY BY ID ================= */
+app.get("/category/:id", async (req, res) => {
+  try {
+    const category = await Category.findById(req.params.id);
+    res.json(category);
+  } catch (err) {
+    res.status(500).json({ message: "Fetch category failed" });
+  }
+});
+
+/* ================= UPDATE CATEGORY ================= */
+app.put("/category/:id", async (req, res) => {
+  try {
+    const result = await Category.updateOne(
+      { _id: req.params.id },
+      {
+        $set: {
+          category_name: req.body.category_name,
+          description: req.body.description,
+          updated_at: Date.now()
+        }
+      }
+    );
+
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ message: "Category update failed" });
+  }
+});
+
+/* ================= DEACTIVATE CATEGORY ================= */
+app.put("/category/deactivate/:id", async (req, res) => {
+  try {
+    const result = await Category.updateOne(
+      { _id: req.params.id },
+      { $set: { status: false } }
+    );
+
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ message: "Category deactivate failed" });
   }
 });
 

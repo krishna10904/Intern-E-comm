@@ -23,7 +23,8 @@ function Payment() {
 
     const orderId = "ORDER_" + Date.now();
 
-    let result = await fetch("http://localhost:5000/payment", {
+    // 1️⃣ SAVE PAYMENT
+    let paymentResult = await fetch("http://localhost:5000/payment", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -36,10 +37,24 @@ function Payment() {
       })
     });
 
-    result = await result.json();
+    paymentResult = await paymentResult.json();
 
-    if (result) {
-      setMessage("✅ Payment Successful!");
+    if (paymentResult) {
+
+      // 2️⃣ CREATE ORDER AFTER PAYMENT
+      await fetch("http://localhost:5000/create-order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          userId,
+          paymentId: paymentResult._id,
+          totalAmount: amount
+        })
+      });
+
+      setMessage("✅ Payment Successful & Order Created!");
     }
   };
 

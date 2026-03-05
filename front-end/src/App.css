@@ -2,8 +2,8 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', system-ui, sans-serif;
-  background: linear-gradient(135deg, #e8f7f1, #f5fffb);
-  color: #1f2933;
+  background: linear-gradient(135deg, #eef2ff, #f8fafc);
+  color: #1e293b;
 }
 
 /* ===== NAVBAR ===== */
@@ -13,7 +13,7 @@ body {
   padding: 10px 20px;
   margin: 0;
   list-style: none;
-  background: rgba(209, 241, 231, 0.85);
+  background: rgba(37, 99, 235, 0.1);
   backdrop-filter: blur(10px);
   box-shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
@@ -23,7 +23,7 @@ body {
 }
 
 .nav-ul li a {
-  color: #1f4037;
+  color: #1e293b;
   text-decoration: none;
   padding: 8px 14px;
   border-radius: 10px;
@@ -31,7 +31,7 @@ body {
 }
 
 .nav-ul li a:hover {
-  background: rgba(31, 64, 55, 0.08);
+  background: rgba(37, 99, 235, 0.15);
 }
 
 /* Right nav */
@@ -45,7 +45,7 @@ body {
   height: 42px;
   border-radius: 50%;
   margin-right: 15px;
-  box-shadow: 0 0 10px rgba(88, 200, 170, 0.6);
+  box-shadow: 0 0 10px rgba(37, 99, 235, 0.6);
 }
 
 /* ===== CARDS (Login / Register / Product) ===== */
@@ -56,7 +56,7 @@ body {
   margin: 90px auto;
   padding: 30px;
   border-radius: 20px;
-  background: rgba(255,255,255,0.75);
+  background: rgba(255,255,255,0.85);
   backdrop-filter: blur(14px);
   box-shadow: 0 25px 50px rgba(0,0,0,0.12);
 }
@@ -66,17 +66,17 @@ body {
   padding: 12px 14px;
   display: block;
   border-radius: 14px;
-  border: 1px solid #b7e4d8;
+  border: 1px solid #cbd5f5;
   width: 100%;
   margin: 18px 0;
-  background: #f9fffd;
-  color: #1f4037;
+  background: #ffffff;
+  color: #1e293b;
 }
 
 .inputBox:focus {
   outline: none;
-  border-color: #5cc8aa;
-  box-shadow: 0 0 0 2px rgba(92, 200, 170, 0.35);
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.25);
 }
 
 /* ===== BUTTON ===== */
@@ -88,18 +88,18 @@ body {
   cursor: pointer;
   font-weight: 600;
   color: #ffffff;
-  background: linear-gradient(135deg, #5cc8aa, #3fae94);
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .appButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 25px rgba(63, 174, 148, 0.45);
+  box-shadow: 0 12px 25px rgba(37, 99, 235, 0.45);
 }
 
 /* ===== ERROR ===== */
 .invalid-input {
-  color: #e63946;
+  color: #dc2626;
   font-size: 14px;
   margin-top: -10px;
 }
@@ -120,8 +120,8 @@ body {
   margin: 12px;
   padding: 14px;
   border-radius: 16px;
-  background: rgba(255,255,255,0.8);
-  border: 1px solid #ccefe6;
+  background: rgba(255,255,255,0.9);
+  border: 1px solid #e2e8f0;
 }
 
 /* ===== SEARCH ===== */
@@ -130,7 +130,6 @@ body {
   height: 42px;
   padding-left: 15px;
   border-radius: 14px;
-  border: 1px solid #b7e4d8;
-  background: #f9fffd;
+  border: 1px solid #cbd5f5;
+  background: #ffffff;
 }
-

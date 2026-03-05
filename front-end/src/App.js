@@ -13,6 +13,10 @@ import LeavePage from './components/dashboard/LeavePage';
 import Cart from './components/Cart';
 import Profile from './components/Profile';
 import Payment from "./components/Payment";
+import Orders from "./components/Orders";
+import AddCategory from "./components/AddCategory";
+import CategoryList from "./components/CategoryList";
+import UpdateCategory from "./components/UpdateCategory";
 
 function App() {
   return (
@@ -30,9 +34,11 @@ function App() {
             <Route path="/add" element={<AddProduct />} />
             <Route path="/update/:id" element={<UpdateProduct />} />
             <Route path="/profile" element={<Profile />} />
-
+            <Route path="/orders" element={<Orders />} />
             <Route path="/cart" element={<Cart />} />
-
+            <Route path="/add-category" element={<AddCategory />} />
+            <Route path="/categories" element={<CategoryList />} />
+            <Route path="/update-category/:id" element={<UpdateCategory />} />
             {/* Attendance & Leave */}
             <Route path="/attendance" element={<AttendancePage />} />
             <Route path="/leave" element={<LeavePage />} />
