@@ -28,7 +28,7 @@ const UpdateCategory = () => {
   const updateCategory = async ()=>{
 
     await fetch(
-      `http://localhost:5000/category/${params.id}`,
+      `https://intern-e-comm-1.onrender.com/category/${params.id}`,
       {
         method:"PUT",
         body:JSON.stringify({

@@ -14,7 +14,7 @@ const LeavePage = () => {
 
   const fetchLeaves = async () => {
     try {
-      const result = await fetch("http://localhost:5000/leaves", {
+      const result = await fetch("https://intern-e-comm-1.onrender.com/leaves", {
         headers: {
           authorization: JSON.parse(localStorage.getItem("token"))
         }
