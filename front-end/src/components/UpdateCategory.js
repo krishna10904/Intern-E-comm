@@ -16,7 +16,7 @@ const UpdateCategory = () => {
   const getCategoryDetails = async ()=>{
 
     let result = await fetch(
-      `https://intern-e-comm-1.onrender.com/category/${params.id}`
+      `https://intern-e-comm1.onrender.com/category/${params.id}`
     );
 
     result = await result.json();
@@ -28,7 +28,7 @@ const UpdateCategory = () => {
   const updateCategory = async ()=>{
 
     await fetch(
-      `https://intern-e-comm-1.onrender.com/category/${params.id}`,
+      `https://intern-e-comm1.onrender.com/category/${params.id}`,
       {
         method:"PUT",
         body:JSON.stringify({

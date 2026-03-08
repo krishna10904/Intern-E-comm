@@ -18,7 +18,7 @@ function Dashboard() {
 
   const fetchStats = async () => {
     try {
-      let result = await fetch("https://intern-e-comm-1.onrender.com/dashboard-stats");
+      let result = await fetch("https://intern-e-comm1.onrender.com/dashboard-stats");
       result = await result.json();
 
       setStats(result);

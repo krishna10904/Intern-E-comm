@@ -13,7 +13,7 @@ const AddCategory = () => {
       return;
     }
 
-    let result = await fetch("https://intern-e-comm-1.onrender.com/add-category", {
+    let result = await fetch("https://intern-e-comm1.onrender.com/add-category", {
       method: "POST",
       body: JSON.stringify({
         category_name: name,

@@ -11,7 +11,7 @@ const CategoryList = () => {
 
   const getCategories = async ()=>{
 
-    let result = await fetch("https://intern-e-comm-1.onrender.com/categories");
+    let result = await fetch("https://intern-e-comm1.onrender.com/categories");
     result = await result.json();
 
     setCategories(result);
@@ -19,7 +19,7 @@ const CategoryList = () => {
 
   const deactivateCategory = async(id)=>{
 
-    await fetch(`https://intern-e-comm-1.onrender.com/category/deactivate/${id}`,{
+    await fetch(`https://intern-e-comm1.onrender.com/category/deactivate/${id}`,{
       method:"PUT"
     });
 

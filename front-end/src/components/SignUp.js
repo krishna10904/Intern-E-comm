@@ -15,7 +15,7 @@ const SignUp = () => {
 
     const collectData = async () => {
         console.warn(name, email, password);
-        let result = await fetch("https://intern-e-comm-1.onrender.com/register", {
+        let result = await fetch("https://intern-e-comm1.onrender.com/register", {
             method: 'post',
             body: JSON.stringify({ name, email, password }),
             headers: {
