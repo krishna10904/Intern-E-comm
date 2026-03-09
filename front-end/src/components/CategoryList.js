@@ -10,20 +10,24 @@ const CategoryList = () => {
   },[]);
 
   const getCategories = async ()=>{
-
-    let result = await fetch("https://intern-e-comm1.onrender.com/categories");
-    result = await result.json();
-
-    setCategories(result);
+    try{
+      let result = await fetch("https://intern-e-comm1.onrender.com/categories");
+      result = await result.json();
+      setCategories(result || []);
+    }catch(err){
+      console.log("Category fetch error:",err);
+    }
   }
 
   const deactivateCategory = async(id)=>{
-
-    await fetch(`https://intern-e-comm1.onrender.com/category/deactivate/${id}`,{
-      method:"PUT"
-    });
-
-    getCategories();
+    try{
+      await fetch(`https://intern-e-comm1.onrender.com/category/deactivate/${id}`,{
+        method:"PUT"
+      });
+      getCategories();
+    }catch(err){
+      console.log(err);
+    }
   }
 
   return(
@@ -39,26 +43,29 @@ const CategoryList = () => {
       </ul>
 
       {
-        categories.map((item,index)=>
+        categories.length > 0 ?
 
-        <ul key={item._id}>
-          <li>{index+1}</li>
-          <li>{item.category_name}</li>
-          <li>{item.description}</li>
+        categories.map((item,index)=>(
+          <ul key={item._id}>
+            <li>{index+1}</li>
+            <li>{item.category_name}</li>
+            <li>{item.description}</li>
 
-          <li>
-            <button onClick={()=>deactivateCategory(item._id)}>
-              Delete
-            </button>
+            <li>
+              <button onClick={()=>deactivateCategory(item._id)}>
+                Delete
+              </button>
 
-            <Link to={"/update-category/"+item._id}>
-              Update
-            </Link>
+              <Link to={"/update-category/"+item._id}>
+                Update
+              </Link>
+            </li>
+          </ul>
+        ))
 
-          </li>
-        </ul>
+        :
 
-        )
+        <h3>No Categories Found</h3>
       }
 
     </div>

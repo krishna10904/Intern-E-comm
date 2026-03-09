@@ -7,18 +7,25 @@ function Orders() {
   const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
-    fetchOrders();
+    if(user){
+      fetchOrders();
+    }
   }, []);
 
   const fetchOrders = async () => {
 
-    let result = await fetch(
-      `https://intern-e-comm1.onrender.com/orders/${user._id}`
-    );
+    try{
+      let result = await fetch(
+        `https://intern-e-comm1.onrender.com/orders/${user._id}`
+      );
 
-    result = await result.json();
+      result = await result.json();
 
-    setOrders(result);
+      setOrders(result || []);
+    }catch(err){
+      console.log("Orders fetch error:",err);
+    }
+
   };
 
   return (
@@ -26,19 +33,24 @@ function Orders() {
 
       <h1>My Orders</h1>
 
-      {orders.map(order => (
-        <div key={order._id} style={{
-          border: "1px solid #ccc",
-          padding: "15px",
-          marginTop: "10px"
-        }}>
+      {orders.length > 0 ?
 
-          <p><b>Order ID:</b> {order._id}</p>
-          <p><b>Status:</b> {order.status}</p>
-          <p><b>Total:</b> ₹ {order.totalAmount}</p>
+        orders.map(order => (
+          <div key={order._id} style={{
+            border: "1px solid #ccc",
+            padding: "15px",
+            marginTop: "10px"
+          }}>
+            <p><b>Order ID:</b> {order._id}</p>
+            <p><b>Status:</b> {order.status}</p>
+            <p><b>Total:</b> ₹ {order.totalAmount}</p>
+          </div>
+        ))
 
-        </div>
-      ))}
+        :
+
+        <h3>No Orders Found</h3>
+      }
 
     </div>
   );
